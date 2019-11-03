@@ -1,23 +1,44 @@
 import React, { Fragment, useState } from 'react';
+import axios from 'axios';
 
 const Register = () => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     password: '',
-    password2: ''
+    password2: '',
+    userType: 0
   });
 
-  const { name, email, password, password2 } = formData;
-  const onChange = e =>
+  const { name, email, password, password2, userType } = formData;
+  const onChange = async e =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
-  const onSubmit = e => {
+  const onSubmit = async e => {
     e.preventDefault();
+    console.log(userType);
     if (password !== password2) {
       console.log('password dont match');
     } else {
-      console.log(formData);
+      const newUser = {
+        name,
+        email,
+        password,
+        userType
+      };
+
+      try {
+        const config = {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        };
+        const body = JSON.stringify(newUser);
+        const res = await axios.post('/api/users', body, config);
+        console.log(res.data);
+      } catch (err) {
+        console.error(err.response.data);
+      }
     }
   };
 
@@ -71,6 +92,23 @@ const Register = () => {
             name='password2'
             minLength='6'
           />
+        </div>
+        <div className='form-group'>
+          <input
+            type='radio'
+            value={0}
+            onChange={e => onChange(e)}
+            name='userType'
+            checked='checked'
+          />{' '}
+          Mentee <br></br>
+          <input
+            type='radio'
+            value={1}
+            onChange={e => onChange(e)}
+            name='userType'
+          />{' '}
+          Mentor <br></br>
         </div>
         <input type='submit' className='btn btn-primary' value='Register' />
       </form>
