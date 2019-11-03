@@ -128,4 +128,36 @@ router.post(
   }
 );
 
+// @route  GET api/profile/mentors
+// @desc   Get all Mentor profiles
+// @access Public
+router.get('/mentors', async (req, res) => {
+  try {
+    const profiles = await MentorProfile.find().populate('user', [
+      'name',
+      'avatar'
+    ]);
+    return res.json(profiles);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
+
+// @route  GET api/profile/mentees
+// @desc   Get all Mentee profiles
+// @access Public
+router.get('/mentees', async (req, res) => {
+  try {
+    const profiles = await MenteeProfile.find().populate('user', [
+      'name',
+      'avatar'
+    ]);
+    return res.json(profiles);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
+
 module.exports = router;
