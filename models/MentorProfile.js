@@ -99,4 +99,7 @@ const MentorProfileSchema = new mongoose.Schema({
   }
 });
 
-module.exports = Profile = mongoose.model('profile', MentorProfileSchema);
+module.exports = MentorProfile = mongoose.model(
+  'mentorProfile',
+  MentorProfileSchema
+);
